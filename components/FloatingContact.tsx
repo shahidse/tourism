@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 
 export default function FloatingContact() {
@@ -35,7 +34,7 @@ export default function FloatingContact() {
     >
       {/* WhatsApp */}
       <motion.a
-        href={`https://wa.me/000000000000${process.env.WHATSAPP}`} // replace with your number
+        href={`https://wa.me/000000000000${process.env.NEXT_PUBLIC_WHATSAPP}`} // replace with your number
         target="_blank"
         className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg cursor-pointer"
         variants={buttonVariants}

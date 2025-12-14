@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -46,12 +47,12 @@ export default function Navbar() {
         }
       `}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
 
         {/* Logo w/ animation */}
         <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-          <Link href="/" className="text-3xl font-extrabold tracking-wide text-blue-800 drop-shadow-md">
-            bestandbest
+          <Link href="/" className="">
+            <Image src="/icons/logo.png" alt="Logo" width={100} height={100} />
           </Link>
         </motion.div>
 

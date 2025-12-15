@@ -25,6 +25,9 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Debug VPS_PATH
+        run: echo "VPS_PATH=${{ secrets.VPS_PATH }}"
+
       - name: Clean VPS directory
         uses: appleboy/ssh-action@v1.0.3
         with:

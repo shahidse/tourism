@@ -57,7 +57,8 @@ jobs:
           passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
           script: |
             cd ${{ secrets.VPS_PATH }}
-            rm -rf .next package.json package-lock.json next.config.ts || true
+            rm -rf .next package.json package-lock.json next.config.ts node_modules || true
             tar xzf ${{ env.DEPLOY_ARCHIVE }}
             rm ${{ env.DEPLOY_ARCHIVE }}
+            npm install --production
             pm2 restart ${{ secrets.APP_NAME }}

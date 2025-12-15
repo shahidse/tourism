@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env:
+  NODE_VERSION: 20
+  DEPLOY_ARCHIVE: deploy.tar.gz
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,8 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          #cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install --no-cache
@@ -26,23 +29,14 @@ jobs:
         run: npm run build
 
       - name: Debug VPS_PATH
-        run: echo VPS_PATH=${{ secrets.VPS_PATH }}
+        run: echo "VPS_PATH=${{ secrets.VPS_PATH }}"
 
-      - name: Clean VPS directory
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}   # new secret
-          script: |
-            rm -rf ${{ secrets.VPS_PATH }}/*
-      - name: List build files
+      - name: Pack build files
         run: |
-          ls -lR .next
-          ls -l package.json package-lock.json next.config.ts
-      - name: Upload files to VPS
+          tar czf ${{ env.DEPLOY_ARCHIVE }} \
+            .next package.json package-lock.json next.config.ts
+
+      - name: Upload archive to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -50,19 +44,20 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
-          source: |
-            .next
-            package.json
-            next.config.ts
+          source: ${{ env.DEPLOY_ARCHIVE }}
           target: ${{ secrets.VPS_PATH }}
-      - name: Restart PM2 process
+
+      - name: Extract archive and restart PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}   # new secret
+          passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
           script: |
             cd ${{ secrets.VPS_PATH }}
+            rm -rf .next package.json package-lock.json next.config.ts || true
+            tar xzf ${{ env.DEPLOY_ARCHIVE }}
+            rm ${{ env.DEPLOY_ARCHIVE }}
             pm2 restart ${{ secrets.APP_NAME }}

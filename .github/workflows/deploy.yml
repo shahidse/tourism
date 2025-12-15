@@ -38,9 +38,12 @@ jobs:
           passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}   # new secret
           script: |
             rm -rf ${{ secrets.VPS_PATH }}/*
-
+      - name: List build files
+        run: |
+          ls -lR .next
+          ls -l package.json package-lock.json next.config.ts
       - name: Upload files to VPS
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
@@ -48,7 +51,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
           source: |
-            .next/**
+            .next
             package.json
             package-lock.json
             next.config.ts

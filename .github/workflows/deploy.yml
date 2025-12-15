@@ -24,7 +24,10 @@ jobs:
 
       - name: Install dependencies
         run: npm install --no-cache
-
+      - name: Set environment variables
+        run: |
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_WHATSAPP=${{ secrets.NEXT_PUBLIC_WHATSAPP }}" >> $GITHUB_ENV
       - name: Build project
         run: npm run build
 

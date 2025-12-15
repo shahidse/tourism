@@ -34,7 +34,7 @@ jobs:
       - name: Pack build files
         run: |
           tar czf ${{ env.DEPLOY_ARCHIVE }} \
-            .next package.json package-lock.json next.config.ts
+            .next package.json package-lock.json next.config.ts public
 
       - name: Upload archive to VPS
         uses: appleboy/scp-action@v0.1.7
@@ -57,8 +57,8 @@ jobs:
           passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
           script: |
             cd ${{ secrets.VPS_PATH }}
-            rm -rf .next package.json package-lock.json next.config.ts node_modules || true
+            rm -rf .next package.json package-lock.json next.config.ts node_modules public || true
             tar xzf ${{ env.DEPLOY_ARCHIVE }}
             rm ${{ env.DEPLOY_ARCHIVE }}
-            npm install --production
+            npm install
             pm2 restart ${{ secrets.APP_NAME }}

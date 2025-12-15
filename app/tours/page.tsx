@@ -15,7 +15,9 @@ export default function ToursPageClient() {
   // Fetch tours from API
   const fetchTours = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tours`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/tours`, {
+        cache: "no-store",
+      });
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
       setTours(data);
@@ -28,7 +30,7 @@ export default function ToursPageClient() {
 
   useEffect(() => {
     fetchTours(); // initial load
-    const interval = setInterval(fetchTours, 30000); // refresh every 30s
+    const interval = setInterval(fetchTours, 60000); // refresh every 30s
     return () => clearInterval(interval);
   }, []);
 

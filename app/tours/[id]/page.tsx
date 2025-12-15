@@ -1,4 +1,5 @@
 import ErrorMessage from "@/components/ErrorMessage";
+import Image from "next/image";
 
 export default async function TourDetails({ params }: { params: any }) {
   const id = await params;
@@ -23,11 +24,12 @@ export default async function TourDetails({ params }: { params: any }) {
     <div className="min-h-screen flex justify-center px-4 py-18 bg-gray-50">
       <div className="w-full max-w-3xl bg-white p-8 rounded-xl shadow-md text-gray-700">
         <h1 className="text-4xl font-bold mb-6 text-center">{tour.title}</h1>
-
-        <img
+        <Image
           src={tour.image}
           className="rounded-lg w-full h-80 object-cover mb-6"
           alt={tour.title}
+          width={500} // specify appropriate width
+          height={300} // specify appropriate height
         />
 
         <p className="text-lg leading-relaxed mb-4">{tour.description}</p>

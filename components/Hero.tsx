@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import HeroShortBookingForm from "./HeroShortBookingForm";
 
 export default function Hero() {
   // Container for text & button stagger
@@ -31,8 +32,8 @@ export default function Hero() {
   // Hero image animation
   const imageVariants = {
     hidden: { scale: 1.1, opacity: 0.8 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
       transition: { duration: 1.5, ease: "easeOut" }
     },
@@ -43,7 +44,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden">
+    <section className="relative h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden ">
       {/* Animated Hero Image */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
@@ -58,7 +59,7 @@ export default function Hero() {
 
       {/* Text Content */}
       <motion.div
-        className="relative z-10 px-4"
+        className="relative z-10 px-4 mb-4"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -80,7 +81,10 @@ export default function Hero() {
         >
           Explore Tours
         </motion.a>
+
       </motion.div>
+
+      <HeroShortBookingForm />
     </section>
   );
 }

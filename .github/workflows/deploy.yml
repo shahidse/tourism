@@ -51,7 +51,7 @@ jobs:
             .next/**
             package.json
             package-lock.json
-            next.config.js
+            next.config.ts
           target: ${{ secrets.VPS_PATH }}
       - name: Restart PM2 process
         uses: appleboy/ssh-action@v1.0.3

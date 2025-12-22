@@ -66,8 +66,10 @@ jobs:
             tar xzf ${{ env.DEPLOY_ARCHIVE }}
             rm ${{ env.DEPLOY_ARCHIVE }}
 
-            # Ensure npm and pm2 are in PATH (adjust if installed via nvm or custom path)
-            export PATH=$PATH:/usr/local/bin
+            # Load nvm and node environment
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
             # Install dependencies
             npm install

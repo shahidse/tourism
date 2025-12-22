@@ -49,7 +49,7 @@ jobs:
           source: ${{ env.DEPLOY_ARCHIVE }}
           target: ${{ secrets.VPS_PATH }}
 
-      - name: Extract archive and restart PM2
+      - name: Extract archive and restart/start PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -58,8 +58,24 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd ${{ secrets.VPS_PATH }}
+
+            # Clean old build
             rm -rf .next package.json package-lock.json next.config.ts node_modules public data || true
+
+            # Extract new build
             tar xzf ${{ env.DEPLOY_ARCHIVE }}
             rm ${{ env.DEPLOY_ARCHIVE }}
+
+            # Ensure npm and pm2 are in PATH (adjust if installed via nvm or custom path)
+            export PATH=$PATH:/usr/local/bin
+
+            # Install dependencies
             npm install
-            pm2 restart ${{ secrets.APP_NAME }}
+
+            # Restart if running, else start new app
+            pm2 describe ${{ secrets.APP_NAME }} >/dev/null 2>&1 \
+              && pm2 restart ${{ secrets.APP_NAME }} \
+              || pm2 start index.js --name ${{ secrets.APP_NAME }}
+
+            # Save PM2 process list so it survives reboot
+            pm2 save

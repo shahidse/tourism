@@ -34,6 +34,7 @@ export default function ContactSection() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
+      
       {/* LEFT — Contact Information */}
       <motion.div
         className="bg-white/80 backdrop-blur-lg shadow-xl rounded-2xl border border-gray-200 p-8"

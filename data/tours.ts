@@ -164,7 +164,7 @@ export const tours = [
     duration: "8 hours",
     location: "Amalfi Coast",
     city: "Naples",
-    image: "/images/amalfi.jpg",
+    image: "/images/amalfi-coast.jpg",
     gallery: [
       "/images/amalfi-1.jpg",
       "/images/amalfi-2.jpg",
@@ -242,7 +242,7 @@ export const tours = [
     duration: "4 hours",
     location: "Mount Etna",
     city: "Catania",
-    image: "/images/etna.jpg",
+    image: "/images/mount-etna.jpg",
     gallery: [
       "/images/etna-1.jpg",
       "/images/etna-2.jpg",
